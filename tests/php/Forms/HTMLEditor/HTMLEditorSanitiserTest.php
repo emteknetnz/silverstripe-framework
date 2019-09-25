@@ -13,6 +13,12 @@ class HTMLEditorSanitiserTest extends FunctionalTest
 
     public function testSanitisation()
     {
+        // ensure configurable value matches what's used in this test
+        $config = HTMLEditorConfig::get('htmleditorsanitisertest');
+        $sanitiser = Injector::inst()->get(HTMLEditorSanitiser::class, false, [$config]);
+        $defaultValue = $sanitiser->config('link_noopener_value');
+        $sanitiser->config('link_noopener_value')->set('link_noopener_value', 'noopener, noreferrer');
+
         $tests = array(
             array(
                 'p,strong',
@@ -73,10 +79,12 @@ class HTMLEditorSanitiserTest extends FunctionalTest
             $sanitiser = new HtmlEditorSanitiser($config);
 
             $htmlValue = HTMLValue::create($input);
-            echo $htmlValue->getContent() . "\n";
             $sanitiser->sanitise($htmlValue);
 
             $this->assertEquals($output, $htmlValue->getContent(), $desc);
         }
+
+        // reset configurable value
+        $sanitiser->config('link_noopener_value')->set('link_noopener_value', $defaultValue);
     }
 }

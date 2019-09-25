@@ -346,7 +346,6 @@ class HTMLEditorSanitiser
 
             // add rel="noopener, noreferrer" to <a> tags with target="_blank" to prevent reverse tabnabbing
             // https://www.owasp.org/index.php/Reverse_Tabnabbing
-            echo "* " . $linkNoopenerValue . "\n";
             if ($linkNoopenerValue && $el->tagName === 'a') {
                 // user has checked the checkbox 'open link in new window'
                 if ($el->getAttribute('target') && $el->getAttribute('rel') !== $linkNoopenerValue) {
